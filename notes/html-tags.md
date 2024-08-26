@@ -46,20 +46,22 @@
 
 </html>
 ```
-| Tag | Function |
-|-----|-----|
-| doctype | Tells the browser what type of file to expect  |
-| html | Contains everything |
-| head | Contains the metadata of the file |
-| meta | Defines the metadata |
-| body | Has all the content that will be shown |
-| h1 - h6 | Heading text |
-| p | Paragraph |
-| a | Used for hyperlinks |
+
+| Tag     | Function                                      |
+| ------- | --------------------------------------------- |
+| doctype | Tells the browser what type of file to expect |
+| html    | Contains everything                           |
+| head    | Contains the metadata of the file             |
+| meta    | Defines the metadata                          |
+| body    | Has all the content that will be shown        |
+| h1 - h6 | Heading text                                  |
+| p       | Paragraph                                     |
+| a       | Used for hyperlinks                           |
 
 The header, footer, main, and section tags don't impact the look of the page and only help with readability of the html file
 
 ## Lists
+
 ```
 ...
 <section>
@@ -72,8 +74,9 @@ The header, footer, main, and section tags don't impact the look of the page and
 </section>
 ...
 ```
-| Tag | Function |
-|-----|----------|
-| ul | defines an unordered list |
-| ol | defines an ordered list |
-| li | list item |
+
+| Tag | Function                  |
+| --- | ------------------------- |
+| ul  | defines an unordered list |
+| ol  | defines an ordered list   |
+| li  | list item                 |
