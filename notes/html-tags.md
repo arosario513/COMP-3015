@@ -2,7 +2,7 @@
 
 ## Basic Structure Example
 
-```
+```html
 <!doctype html>
 <html lang="en">
 
