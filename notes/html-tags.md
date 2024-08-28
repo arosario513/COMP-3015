@@ -62,7 +62,7 @@ The header, footer, main, and section tags don't impact the look of the page and
 
 ## Lists
 
-```
+```html
 ...
 <section>
     <h1>Fruits</h1>
