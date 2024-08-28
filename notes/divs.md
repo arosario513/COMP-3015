@@ -31,4 +31,4 @@ Instead of having to style each tag one by one, you can wrap all of it inside di
 
 ## Things to consider
 
-You don't need to use div for everything you can use tags like header, footer, nav, figure, main and section. Use it only when it's necessary.
+You don't need to use div for everything you can use tags like header, footer, nav, figure, main and section. Use div only when it's necessary.
