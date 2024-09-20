@@ -11,135 +11,46 @@ body {
         "Open Sans",
         "Helvetica Neue",
         sans-serif;
-    background-color: #202030;
-    margin: 0;
+    background: #202030;
+    font-size: 1.2em;
     color: white;
-    min-height: 100vh;
-    padding: 25px 50px;
-    display: grid;
-    grid-template-areas:
-        "header"
-        "acerca-de"
-        "como-ayudar"
-        "footer";
-    grid-template-columns: 1fr;
-}
-
-header,
-section,
-footer {
-    padding: 60px 20px;
-    text-align: center;
-}
-
-header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-}
-
-header p {
-    font-size: 1.2rem;
-    opacity: 0.8;
-}
-
-#acerca-de {
-    grid-area: acerca-de;
-    background-color: #505060;
-    border-radius: 20px;
-    color: #fff;
-}
-
-#acerca-de h2 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    color: #4e54c8;
-    position: relative;
-}
-
-#acerca-de h2::after {
-    content: "";
-    width: 60px;
-    height: 4px;
-    background-color: #4e54c8;
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-#acerca-de p {
-    font-size: 1.1rem;
-    max-width: 800px;
-    margin: 0 auto;
-    line-height: 1.8;
-}
-
-#como-ayudar {
-    grid-area: como-ayudar;
-    border-radius: 20px;
-    background-color: #404050;
-}
-
-#como-ayudar h2 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    color: #ff6347;
-    position: relative;
-}
-
-#como-ayudar h2::after {
-    content: "";
-    width: 60px;
-    height: 4px;
-    background-color: #ff6347;
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-#como-ayudar p {
-    font-size: 1.1rem;
-    color: black;
-    max-width: 800px;
-    margin: 0 auto;
-    line-height: 1.8;
-}
-
-footer {
-    grid-area: footer;
-    background-color: #343a40;
-    border-radius: 20px;
-    color: #ffffff;
-    font-size: 1rem;
-    padding: 30px 20px;
-    text-align: center;
-}
-
-footer p {
     margin: 0;
-    font-size: 1rem;
-    opacity: 0.8;
 }
 
-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 10px;
+header {
+    padding: 5px 20px;
+    letter-spacing: 5px;
 }
 
-@media (max-width: 768px) {
-    body {
-        grid-template-columns: 1fr;
-    }
+div.container {
+    padding: 25px 50px;
+    text-wrap: balance;
+}
 
-    header,
-    section,
-    footer {
-        padding: 40px 20px;
-    }
+#welcome {
+    background-color: #ff7f7f;
+}
+
+#mission {
+    background-color: #5050ff;
+}
+
+#help {
+    background-color: #b080ff;
+}
+
+.help {
+    background-color: #8000b0;
+    margin: 25px;
+    border-radius: 10px;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+}
+
+footer nav a {
+    margin-right: 10px;
+    font-size: 0.9em;
 }
