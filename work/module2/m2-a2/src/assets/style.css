@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family:
         system-ui,
@@ -23,26 +27,26 @@ header {
 }
 
 div.container {
-    padding: 25px 50px;
     text-wrap: balance;
+    display: grid;
 }
 
-#welcome {
-    background-color: #ff7f7f;
+header,
+.help {
+    background-color: #8000b0;
 }
 
-#mission {
-    background-color: #5050ff;
-}
-
+#welcome,
+#mission,
 #help {
-    background-color: #b080ff;
+    text-align: center;
+    padding: 50px 100px;
 }
 
 .help {
-    background-color: #8000b0;
-    margin: 25px;
     border-radius: 10px;
+    padding: 25px 50px;
+    margin-bottom: 0;
 }
 
 footer {
@@ -53,4 +57,15 @@ footer {
 footer nav a {
     margin-right: 10px;
     font-size: 0.9em;
+}
+
+section {
+    padding: 25px;
+    display: flex;
+    flex-flow: wrap;
+    gap: 15px;
+}
+
+section div {
+    flex: 1 400px;
 }
