@@ -1,6 +1,7 @@
-div,
-nav {
+#footer,
+#about,
+#projects,
+.testimony {
     background-color: #ffffffa0;
     backdrop-filter: blur(4px);
 }
-
