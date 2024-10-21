@@ -25,14 +25,6 @@ let name = "John";
 // ReferenceError: Cannot access 'name' before initialization
 ```
 
-### const (constant variables)
-
-```js
-const name = "John";
-let name = "Jason";
-// Uncaught SyntaxError: redeclaration of const name
-```
-
 #### var
 
 ```js
@@ -40,6 +32,14 @@ console.log(name);
 let var = "John";
 
 // undefined
+```
+
+### const (constant variables)
+
+```js
+const name = "John";
+let name = "Jason";
+// Uncaught SyntaxError: redeclaration of const name
 ```
 
 ## Functions
@@ -101,4 +101,108 @@ switch (place) {
 }
 
 // First Place
+```
+
+## Loops
+
+### For Loops
+
+```js
+for (var i = 0; i < 5; i++) {
+  console.log(i);
+}
+
+/*
+0
+1
+2
+3
+4
+*/
+```
+
+### While Loops
+
+```js
+var i = 0;
+
+while (i < 5) {
+  console.log(i);
+  i++;
+}
+
+/*
+0
+1
+2
+3
+4
+*/
+```
+
+## OOP
+
+### Class with Constructor
+
+```js
+class User {
+  constructor(username, email) {
+    this.username = username;
+    this.email = email;
+  }
+
+  info() {
+    console.log(`Username: ${this.username}\nEmail:   ${this.email}`);
+  }
+}
+
+let user = new User("John", "jdoe@mail.com");
+user.info();
+/*
+Username: John
+Email:    jdoe@mail.com
+*/
+```
+
+### Inheritance
+
+```js
+class User {
+  constructor(username, email) {
+    this.username = username;
+    this.email = email;
+  }
+
+  info() {
+    console.log(`Username: ${this.username}\nEmail:    ${this.email}\n`);
+  }
+}
+
+class Admin extends User {
+  constructor(username, email, id) {
+    super(username, email);
+    this.id = id;
+  }
+
+  info() {
+    console.log(
+      `Username: ${this.username}\nEmail:    ${this.email}\nID:       ${this.id}\n`,
+    );
+  }
+}
+
+let user = new User("Michael", "mmyers@mail.com");
+let admin = new Admin("John", "jdoe@mail.com", "A100");
+
+user.info();
+/*
+Username: Michael
+Email:    mmyers@mail.com
+*/
+admin.info();
+/*
+Username: John
+Email:    jdoe@mail.com
+ID:       A100
+*/
 ```
