@@ -11,6 +11,7 @@ body {
         "Open Sans",
         "Helvetica Neue",
         sans-serif;
+        background-color: #f0f0ff;
     margin: 0;
 }
 
@@ -21,16 +22,19 @@ header {
 }
 
 main {
-    padding: 25px 50px;
+    padding:25px;
+    margin:100px;
+    background-color: white;
+    border-radius: 15px;
+}
+
+header {
+    background-color: red;
 }
 
 #nav-title {
     font-size: 1.5em;
     font-weight: bold;
-}
-
-section {
-    padding: 10px;
 }
 
 button {
@@ -40,12 +44,22 @@ button {
     border-radius: 15px;
     border-style: none;
     font-size: 1em;
+    margin-right: 10px;
 }
 
-button:hover {
-    background-color: #b00000;
+button#toggle-text:hover {
+    background-color: #c00000;
+}
+
+button#change-theme {
+    font-weight: bold;
+}
+
+button#change-theme:hover {
+    color: #d0d0d0;
 }
 
 footer {
     text-align: center;
 }
+
