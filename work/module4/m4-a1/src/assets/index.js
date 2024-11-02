@@ -35,7 +35,7 @@ id="card${index}">${character}</div>`,
     }
     function checkForMatch() {
         attempts++;
-        $("#attempts").text(`Intentos: ${attempts}`);
+        $("#attempts").text(`Tries: ${attempts}`);
         const [card1, card2] = flippedCards;
         if (card1.data("character") === card2.data("character")) {
             card1.addClass("matched");
