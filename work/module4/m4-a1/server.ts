@@ -4,6 +4,10 @@ const app: Express = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.static("src"));
+app.use("/css", express.static("node_modules/bootstrap/dist/css"));
+app.use("/js", express.static("node_modules/bootstrap/dist/js"));
+app.use("/jq", express.static("node_modules/jquery/dist"));
+app.use("/icons", express.static("./node_modules/bootstrap-icons/font"));
 
 app.get("/", (req: Request, res: Response) => {
     res.sendFile(path.resolve("src", "index.html"));

@@ -1,12 +1,35 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Super Match</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/icons/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="assets/style.css" />
 </head>
 
-<body></body>
+<body>
+    <div class="container-fluid text-center bg-body-tertiary p-2 text-light position-relative">
+        <i id="reload-game" class="m-2 bi bi-arrow-clockwise btn btn btn-info position-absolute top-0 end-0"
+            style="top: 25%; right: 20px"></i>
+        <h2 class="mt-3 fw-bold">Super Match</h2>
+        <p>Find all the pairs to win!</p>
+    </div>
+    <div id="game-container" class="d-flex flex-column align-items-center">
+        <div id="game-board" class="d-flex flex-wrap justify-content-center"></div>
+    </div>
+    <div class="navbar fixed-bottom bg-body-tertiary p-3">
+        <span id="completed-games"> Games Completed: 0</span> |
+        <span id="attempts">Tries: 0</span> |
+        <span id="pairs-found">Pairs Found: 0</span> |
+        <span id="efficiency">Efficiency: 0%</span>
+    </div>
+
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/jq/jquery.min.js"></script>
+    <script src="assets/index.js"></script>
+</body>
 
 </html>
