@@ -39,7 +39,7 @@ def register():
             msg = 'Fill the form'
         else:
             cursor.execute(
-                'INSERT INTO usuarios (name, email, password) VALUES (%s, %s, %s)', (nombre, email, password,))
+                'INSERT INTO users (name, email, password) VALUES (%s, %s, %s)', (nombre, email, password,))
             mysql.connection.commit()
             msg = 'Registered successfully'
             return redirect(url_for('login'))
@@ -58,7 +58,7 @@ def login():
         password = request.form['password']
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute(
-            'SELECT * FROM usuarios WHERE email = %s AND password = %s', (email, password,))
+            'SELECT * FROM users WHERE email = %s AND password = %s', (email, password,))
         account = cursor.fetchone()
         if account:
             session['loggedin'] = True
@@ -76,6 +76,34 @@ def logout():
     session.pop('loggedin', None)
     session.pop('id', None)
     session.pop('nombre', None)
+    return redirect(url_for('login'))
+
+
+@app.route('/dashboard')
+def dashboard():
+    '''Dashboard Function'''
+    if 'loggedin' in session:
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute(
+            'SELECT * FROM projects WHERE user_id = %s', (session['id'],))
+        projects = cursor.fetchall()
+        return render_template('dashboard.html', nombre=session['nombre'], projects=projects)
+    return redirect(url_for('login'))
+
+
+@app.route("/project/create", methods=["GET", "POST"])
+def create_project():
+    if 'loggedin' in session:
+        if request.method == "POST" and "title" in request.form and "description" in request.form:
+            title = request.form['title']
+            description = request.form['description']
+            date_start = request.form['date_start']
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute('INSERT INTO proyectos (usuario_id, title, description, date_start) VALUES (%s, %s, %s, %s)',
+                           (session['id'], title, description, date_start,))
+            mysql.connection.commit()
+            return redirect(url_for('dashboard'))
+        return render_template('crear_proyecto.html')
     return redirect(url_for('login'))
 
 
