@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% block title %}List of Tasks{% endblock %} {% block
+content %}
+<h2>Tasks for Project</h2>
+<a href="{{ url_for('create_task', project_id=project_id) }}" class="btn btn-success mb-2">Add New Task</a>
+<table id="tasksTable" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Date</th>
+            <th>Completed</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.description }}</td>
+            <td>{{ task.date }}</td>
+            <td>{{ 'Yes' if task.completed else 'No' }}</td>
+            <td>
+                <a href="{{ url_for('edit_task', id=task.id) }}" class="btn btn-primary btn-sm">Edit</a>
+                <a href="{{ url_for('delete_task', id=task.id) }}" class="btn btn-danger btn-sm">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{{ url_for('dashboard') }}" class="btn btn-secondary mt-2">Back to Dashboard</a>
+{% endblock %} {% block scripts %}
+<script>
+    $(document).ready(function () {
+        $("#tasksTable").DataTable();
+    });
+</script>
+{% endblock %}
