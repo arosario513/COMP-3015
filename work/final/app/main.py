@@ -8,6 +8,8 @@ from flask import Flask, render_template, redirect, url_for, request, flash
 from dotenv import load_dotenv
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
+from argon2 import PasswordHasher
+from argon2.exceptions import VerifyMismatchError
 
 load_dotenv()
 
@@ -19,6 +21,7 @@ app.config['MYSQL_DB'] = 'data'
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 
 mysql: MySQL = MySQL(app)
+ph: PasswordHasher = PasswordHasher()
 
 
 login_manager = LoginManager(app)
@@ -28,7 +31,15 @@ login_manager.login_message_category = "info"
 
 
 class User(UserMixin):
-    def __init__(self, id, name, email):
+    '''
+    User Class
+    Attributes:
+        id: int
+        name: str
+        email: str
+    '''
+
+    def __init__(self, id: int, name: str, email: str):
         self.id = id
         self.name = name
         self.email = email
@@ -36,6 +47,7 @@ class User(UserMixin):
 
 @login_manager.user_loader
 def load_user(user_id):
+    '''Load User'''
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cursor.execute('SELECT * FROM users WHERE id = %s', (user_id,))
     account = cursor.fetchone()
@@ -54,7 +66,7 @@ def register():
     if request.method == 'POST' and all(field in request.form for field in ['name', 'email', 'password']):
         name = request.form['name']
         email = request.form['email']
-        password = request.form['password']
+        password = ph.hash(request.form['password'])
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM users WHERE email = %s', (email,))
         account = cursor.fetchone()
@@ -78,18 +90,24 @@ def login():
     if request.method == 'POST' and all(field in request.form for field in ['email', 'password']):
         email = request.form['email']
         password = request.form['password']
+
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute(
-            'SELECT * FROM users WHERE email = %s AND password = %s', (email, password))
+        cursor.execute('SELECT * FROM users WHERE email = %s', (email,))
         account = cursor.fetchone()
+
         if account:
-            user = User(id=account['id'],
-                        name=account['name'], email=account['email'])
-            login_user(user)
-            flash('Logged in successfully!', 'success')
-            return redirect(url_for('dashboard'))
+            try:
+                if ph.verify(account['password'], password):
+                    user = User(
+                        id=account['id'], name=account['name'], email=account['email'])
+                    login_user(user)
+                    flash('Logged in successfully!', 'success')
+                    return redirect(url_for('dashboard'))
+            except VerifyMismatchError:
+                flash('Invalid email or password!', 'danger')
         else:
             flash('Invalid email or password!', 'danger')
+
     return render_template('login.html')
 
 
@@ -114,13 +132,13 @@ def dashboard():
 @app.route('/project/create', methods=['GET', 'POST'])
 @login_required
 def create_project():
-    if request.method == 'POST' and all(field in request.form for field in ['title', 'description', 'start_date']):
+    if request.method == 'POST' and all(field in request.form for field in ['title', 'description', 'date_start']):
         title = request.form['title']
         description = request.form['description']
-        start_date = request.form['start_date']
+        date_start = request.form['date_start']
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('INSERT INTO projects (user_id, title, description, start_date) VALUES (%s, %s, %s, %s)',
-                       (current_user.id, title, description, start_date))
+        cursor.execute('INSERT INTO projects (user_id, title, description, date_start) VALUES (%s, %s, %s, %s)',
+                       (current_user.id, title, description, date_start))
         mysql.connection.commit()
         flash('Project created successfully!', 'success')
         return redirect(url_for('dashboard'))
@@ -131,13 +149,13 @@ def create_project():
 @login_required
 def edit_project(id):
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    if request.method == 'POST' and all(field in request.form for field in ['title', 'description', 'start_date']):
+    if request.method == 'POST' and all(field in request.form for field in ['title', 'description', 'date_start']):
         title = request.form['title']
         description = request.form['description']
-        start_date = request.form['start_date']
-        completed = 'completed' in request.form
-        cursor.execute('UPDATE projects SET title=%s, description=%s, start_date=%s, completed=%s WHERE id=%s AND user_id=%s',
-                       (title, description, start_date, completed, id, current_user.id))
+        date_start = request.form['date_start']
+        is_finished = 'is_finished' in request.form
+        cursor.execute('UPDATE projects SET title=%s, description=%s, date_start=%s, is_finished=%s WHERE id=%s AND user_id=%s',
+                       (title, description, date_start, is_finished, id, current_user.id))
         mysql.connection.commit()
         flash('Project updated successfully!', 'success')
         return redirect(url_for('dashboard'))
