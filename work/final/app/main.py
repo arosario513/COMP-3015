@@ -3,8 +3,8 @@
 
 import os
 import re
-from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
-from flask import Flask, render_template, redirect, url_for, request, flash
+from flask_login import LoginManager, login_required, current_user, UserMixin, login_user, logout_user
+from flask import Flask, render_template, redirect, url_for, request, flash, session
 from dotenv import load_dotenv
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
@@ -87,10 +87,9 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST' and all(field in request.form for field in ['email', 'password']):
+    if request.method == 'POST' and 'email' in request.form and 'password' in request.form:
         email = request.form['email']
         password = request.form['password']
-
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM users WHERE email = %s', (email,))
         account = cursor.fetchone()
@@ -101,12 +100,16 @@ def login():
                     user = User(
                         id=account['id'], name=account['name'], email=account['email'])
                     login_user(user)
+                    session['loggedin'] = True
+                    session['id'] = account['id']
+                    session['name'] = account['name']
                     flash('Logged in successfully!', 'success')
                     return redirect(url_for('dashboard'))
+                flash('Invalid email or password.', 'danger')
             except VerifyMismatchError:
-                flash('Invalid email or password!', 'danger')
+                flash('Invalid email or password.', 'danger')
         else:
-            flash('Invalid email or password!', 'danger')
+            flash('Invalid email or password.', 'danger')
 
     return render_template('login.html')
 
@@ -114,7 +117,9 @@ def login():
 @app.route('/logout')
 @login_required
 def logout():
+    '''Logs out of session'''
     logout_user()
+    session.clear()
     flash('You have been logged out.', 'info')
     return redirect(url_for('login'))
 
@@ -179,6 +184,61 @@ def delete_project(id):
         mysql.connection.commit()
         flash('Project deleted successfully.', 'success')
     return redirect(url_for('dashboard'))
+
+
+@app.route('/project/<int:project_id>/tasks')
+@login_required
+def list_tasks(project_id):
+    session['current_project'] = project_id
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM tasks WHERE project_id = %s', (project_id,))
+    tasks = cursor.fetchall()
+    return render_template('list_tasks.html', project_id=project_id, tasks=tasks)
+
+
+@app.route('/project/<int:project_id>/task/create', methods=['GET', 'POST'])
+def create_task(project_id):
+    if request.method == 'POST':
+        task_description = request.form['description']
+        task_date = request.form['date']
+        cursor = mysql.connection.cursor()
+        cursor.execute(
+            'INSERT INTO tasks (project_id, description, date) VALUES (%s, %s, %s)',
+            (project_id, task_description, task_date)
+        )
+        mysql.connection.commit()
+        return redirect(url_for('list_tasks', project_id=project_id))
+    return render_template('create_task.html', project_id=project_id)
+
+
+@app.route('/task/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_task(id):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    if request.method == 'POST':
+        description = request.form['description']
+        date = request.form['date']
+        completed = 'completed' in request.form
+        cursor.execute(
+            'UPDATE tasks SET description = %s, date = %s, completed = %s WHERE id = %s',
+            (description, date, completed, id)
+        )
+        mysql.connection.commit()
+        flash('Task updated successfully!', 'success')
+        return redirect(url_for('list_tasks', project_id=session.get('current_project')))
+    cursor.execute('SELECT * FROM tasks WHERE id = %s', (id,))
+    task = cursor.fetchone()
+    return render_template('edit_task.html', task=task)
+
+
+@app.route('/task/delete/<int:id>', methods=['POST'])
+@login_required
+def delete_task(id):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('DELETE FROM tasks WHERE id = %s', (id,))
+    mysql.connection.commit()
+    flash('Task deleted successfully!', 'success')
+    return redirect(url_for('list_tasks', project_id=session.get('current_project')))
 
 
 if __name__ == '__main__':
