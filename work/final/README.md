@@ -82,4 +82,5 @@ mariadb   mariadb     "docker-entrypoint.s…"   db        3 seconds ago   Up 2 
 - Now, you should be able to create a user and login
 
 ## No Docker
-Alternatively, you can just create a virtual environment inside of `app/` and install the modules needed with  `pip install -r requirements.txt` and then run `python main.py`. If  you already have a mysql/mariadb server running you can use the `init.sql` script to create the tables.
+Alternatively, you can just create a virtual environment inside of `app/` and install the modules needed with  
+`pip install -r requirements.txt` and then run `python main.py`. If you already have a mysql/mariadb server running, you can use the `init.sql` script to create the tables.
