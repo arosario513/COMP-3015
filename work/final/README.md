@@ -81,4 +81,5 @@ mariadb   mariadb     "docker-entrypoint.s…"   db        3 seconds ago   Up 2 
 - The website is running at `http://127.0.0.1:5000`
 - Now, you should be able to create a user and login
 
-## Have fun
+## No Docker
+Alternatively, you can just create a virtual environment inside of `app/` and install the modules needed with  `pip install -r requirements.txt` and then run `python main.py`. If  you already have a mysql/mariadb server running you can use the `init.sql` to create the tables.
