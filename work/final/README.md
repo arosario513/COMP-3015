@@ -1,5 +1,12 @@
 # Final Work
 
+
+![login](https://github.com/user-attachments/assets/b2e3d2ee-b2ac-4a71-8b77-a4b1aeda0ba2)
+![projects](https://github.com/user-attachments/assets/0ff93063-8f9e-400b-a96e-1e4bdeb1620e)
+![tasks](https://github.com/user-attachments/assets/d0175c29-7e7a-442b-a139-0ffe0cbeaf80)
+![editing](https://github.com/user-attachments/assets/a0cfc369-b65b-47ab-9a17-13472a280544)
+
+
 ## Installing
 
 Create a new folder and run these commands inside:
