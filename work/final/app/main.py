@@ -14,7 +14,7 @@ from argon2.exceptions import VerifyMismatchError
 load_dotenv()
 
 app: Flask = Flask(__name__)
-app.config['MYSQL_HOST'] = '127.0.0.1'
+app.config['MYSQL_HOST'] = os.getenv("MYSQL_HOST", "db")
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = os.getenv("MARIADB_ROOT_PASSWORD")
 app.config['MYSQL_DB'] = 'data'
